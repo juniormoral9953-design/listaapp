@@ -9,6 +9,9 @@ import {
   ToggleButtonGroup,
   ToggleButton,
   Tooltip,
+  Fab,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
@@ -36,6 +39,9 @@ export default function Responsaveis() {
   const [viewMode, setViewMode] = useState('grid');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editTarget, setEditTarget] = useState(null);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
   const { confirm, askConfirm, handleClose: closeConfirm, handleConfirm } = useConfirm();
@@ -113,9 +119,11 @@ export default function Responsaveis() {
         title="Responsáveis"
         subtitle={`${responsaveis.length} responsável${responsaveis.length !== 1 ? 'is' : ''} cadastrado${responsaveis.length !== 1 ? 's' : ''}`}
         action={
-          <Button variant="contained" startIcon={<AddRoundedIcon />} onClick={handleOpenCreate}>
-            Novo responsável
-          </Button>
+          !isMobile && (
+            <Button variant="contained" startIcon={<AddRoundedIcon />} onClick={handleOpenCreate}>
+              Novo responsável
+            </Button>
+          )
         }
       />
 
@@ -199,7 +207,21 @@ export default function Responsaveis() {
         onClose={closeConfirm}
         onConfirm={handleConfirm}
       />
-
+      {isMobile && (
+        <Fab
+          color="primary"
+          aria-label="adicionar"
+          onClick={handleOpenCreate}
+          sx={{
+            position: 'fixed',
+            bottom: 16,
+            right: 16,
+            zIndex: 50,
+          }}
+        >
+          <AddRoundedIcon />
+        </Fab>
+      )}
       <GlobalSnackbar snackbar={snackbar} onClose={closeSnackbar} />
     </Box>
   );
