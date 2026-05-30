@@ -124,7 +124,6 @@ export default function MainLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>

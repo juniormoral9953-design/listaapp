@@ -19,7 +19,6 @@ import {
   TableCell,
   IconButton,
   Tooltip,
-  Paper,
   Alert,
 } from '@mui/material';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
