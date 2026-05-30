@@ -16,8 +16,6 @@ import {
   Divider,
   Avatar,
   Chip,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
@@ -123,7 +121,6 @@ function DrawerContent({ onClose, currentPath }) {
 export default function MainLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-  const theme = useTheme();
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
