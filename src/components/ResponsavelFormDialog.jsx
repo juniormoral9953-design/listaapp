@@ -83,9 +83,9 @@ export default function ResponsavelFormDialog({
         </Box>
       </DialogTitle>
 
-      <DialogContent sx={{ pt: 4, pb: 1 }}>
+      <DialogContent sx={{ pt: 5, pb: 1 }}>
         <Grid container spacing={2}>
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ mt: 1 }}>
             <TextField
               label="Nome *"
               fullWidth
