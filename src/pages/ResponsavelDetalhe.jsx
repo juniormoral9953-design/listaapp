@@ -40,17 +40,21 @@ import ConfirmDialog from '../components/ConfirmDialog';
 import GlobalSnackbar from '../components/GlobalSnackbar';
 import LoadingOverlay from '../components/LoadingOverlay';
 import EmptyState from '../components/EmptyState';
+import WhatsAppButton from '../components/WhatsAppButton';
 
-function InfoRow({ icon, label, value }) {
+function InfoRow({ icon, label, value, action }) {
   if (!value) return null;
   return (
-    <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5, py: 1 }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, py: 1 }}>
       <Box sx={{ color: 'primary.main', mt: 0.2 }}>{icon}</Box>
-      <Box>
-        <Typography variant="caption" color="text.secondary" fontWeight={600} textTransform="uppercase" letterSpacing={0.5}>
-          {label}
-        </Typography>
-        <Typography variant="body2" fontWeight={500} color="text.primary">{value}</Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box>
+          <Typography variant="caption" color="text.secondary" fontWeight={600} textTransform="uppercase" letterSpacing={0.5}>
+            {label}
+          </Typography>
+          <Typography variant="body2" fontWeight={500} color="text.primary">{value}</Typography>
+        </Box>
+        {action}
       </Box>
     </Box>
   );
@@ -199,6 +203,7 @@ export default function ResponsavelDetalhe() {
                 icon={<PhoneRoundedIcon fontSize="small" />}
                 label="Contato"
                 value={responsavel?.contato}
+                action={responsavel?.contato ? <WhatsAppButton telefone={responsavel?.contato} size="small" /> : null}
               />
               {responsavel?.observacao && (
                 <InfoRow
@@ -301,6 +306,7 @@ export default function ResponsavelDetalhe() {
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                           <PhoneRoundedIcon sx={{ fontSize: 13, color: 'text.secondary' }} />
                           <Typography variant="body2" color="text.secondary">{p.contato}</Typography>
+                          {p.contato && <WhatsAppButton telefone={p.contato} size="small" />}
                         </Box>
                       </TableCell>
                       <TableCell sx={{ display: { xs: 'none', lg: 'table-cell' } }}>

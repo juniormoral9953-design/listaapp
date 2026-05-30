@@ -19,6 +19,7 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
 import { useNavigate } from 'react-router-dom';
+import WhatsAppButton from './WhatsAppButton';
 
 function getAvatarColor(nome) {
   const colors = ['#1a56a4', '#2e7d32', '#7b1fa2', '#c62828', '#e65100', '#00695c'];
@@ -69,10 +70,11 @@ export default function ResponsaveisTable({ responsaveis, pessoasCounts, onEdit,
                   <Typography fontWeight={600} fontSize={14}>{r.nome}</Typography>
                 </Box>
               </TableCell>
-              <TableCell onClick={() => navigate(`/responsaveis/${r.id}`)} sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+              <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                   <PhoneRoundedIcon sx={{ fontSize: 14, color: 'text.secondary' }} />
                   <Typography variant="body2" color="text.secondary">{r.contato}</Typography>
+                  {r.contato && <WhatsAppButton telefone={r.contato} size="small" />}
                 </Box>
               </TableCell>
               <TableCell onClick={() => navigate(`/responsaveis/${r.id}`)} sx={{ display: { xs: 'none', md: 'table-cell' } }}>

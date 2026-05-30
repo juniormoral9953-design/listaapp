@@ -18,6 +18,7 @@ import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import { useNavigate } from 'react-router-dom';
+import WhatsAppButton from './WhatsAppButton';
 
 function getInitials(nome) {
   if (!nome) return '?';
@@ -82,6 +83,7 @@ export default function ResponsavelCard({ responsavel, pessoasCount, onEdit, onD
               <Typography variant="body2" color="text.secondary" noWrap>
                 {responsavel.contato}
               </Typography>
+              {responsavel.contato && <WhatsAppButton telefone={responsavel.contato} size="small" />}
             </Box>
           </Box>
         </Box>
