@@ -1,24 +1,19 @@
 // src/components/ResponsaveisTable.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Card,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
   Avatar,
   Typography,
   Box,
-  Chip,
   IconButton,
   Tooltip,
+  Divider,
 } from '@mui/material';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
-import { useNavigate } from 'react-router-dom';
+import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
+import NoteRoundedIcon from '@mui/icons-material/NoteRounded';
 import WhatsAppButton from './WhatsAppButton';
 
 function getAvatarColor(nome) {
@@ -31,86 +26,202 @@ function getAvatarColor(nome) {
 }
 
 export default function ResponsaveisTable({ responsaveis, pessoasCounts, onEdit, onDelete }) {
-  const navigate = useNavigate();
+  const [expandedId, setExpandedId] = useState(null);
+
+  const toggleExpanded = (id) => {
+    setExpandedId(expandedId === id ? null : id);
+  };
+
 
   return (
-    <Card sx={{ overflow: 'hidden', overflowX: { xs: 'auto', md: 'visible' } }}>
-      <Table>
-        <TableHead>
-          <TableRow sx={{ bgcolor: 'background.default' }}>
-            <TableCell sx={{ fontWeight: 700, color: 'text.secondary', fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-              Responsável
-            </TableCell>
-            <TableCell sx={{ fontWeight: 700, color: 'text.secondary', fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.5, display: { xs: 'none', sm: 'table-cell' } }}>
-              Contato
-            </TableCell>
-            <TableCell sx={{ fontWeight: 700, color: 'text.secondary', fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.5, display: { xs: 'none', md: 'table-cell' } }}>
-              Pessoas
-            </TableCell>
-            <TableCell sx={{ fontWeight: 700, color: 'text.secondary', fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.5, display: { xs: 'none', lg: 'table-cell' } }}>
-              Observação
-            </TableCell>
-            <TableCell align="right" sx={{ fontWeight: 700, color: 'text.secondary', fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-              Ações
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {responsaveis.map((r) => (
-            <TableRow
-              key={r.id}
-              hover
-              sx={{ cursor: 'pointer', '&:last-child td': { border: 0 } }}
+    <Card sx={{ overflow: 'hidden' }}>
+      {responsaveis.map((r, index) => (
+        <Box key={r.id}>
+          {/* LINHA PRINCIPAL - NOME + WHATSAPP + AÇÕES */}
+          <Box
+            sx={{
+              p: 2,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1.5,
+              bgcolor: expandedId === r.id ? 'action.hover' : 'transparent',
+              transition: 'background-color 0.2s ease',
+            }}
+          >
+            {/* AVATAR + NOME */}
+            <Avatar
+              sx={{
+                bgcolor: getAvatarColor(r.nome),
+                width: 40,
+                height: 40,
+                fontSize: 16,
+                fontWeight: 700,
+                flexShrink: 0,
+              }}
             >
-              <TableCell onClick={() => navigate(`/responsaveis/${r.id}`)}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                  <Avatar sx={{ bgcolor: getAvatarColor(r.nome), width: 36, height: 36, fontSize: 14, fontWeight: 700 }}>
-                    {r.nome?.charAt(0).toUpperCase()}
-                  </Avatar>
-                  <Typography fontWeight={600} fontSize={14}>{r.nome}</Typography>
+              {r.nome?.charAt(0).toUpperCase()}
+            </Avatar>
+
+            <Box
+              sx={{ flex: 1, cursor: 'pointer' }}
+              onClick={() => toggleExpanded(r.id)}
+            >
+              <Typography fontWeight={600} fontSize={15}>
+                {r.nome}
+              </Typography>
+            </Box>
+
+            {/* BOTÃO WHATSAPP */}
+            {r.contato && <WhatsAppButton telefone={r.contato} size="small" />}
+
+            {/* AÇÕES - EDITAR E EXCLUIR */}
+            <Tooltip title="Editar">
+              <IconButton
+                size="small"
+                color="primary"
+                onClick={() => onEdit(r)}
+              >
+                <EditRoundedIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Excluir">
+              <IconButton
+                size="small"
+                color="error"
+                onClick={() => onDelete(r)}
+              >
+                <DeleteRoundedIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </Box>
+
+          {/* DETALHES EXPANDIDOS - RENDERIZAÇÃO CONDICIONAL */}
+          {expandedId === r.id && (
+            <Box
+              sx={{
+                bgcolor: 'background.default',
+                px: 2,
+                py: 1.5,
+                borderLeft: '4px solid',
+                borderColor: 'primary.main',
+                animation: 'slideDown 0.3s ease-in-out',
+                '@keyframes slideDown': {
+                  from: {
+                    opacity: 0,
+                    transform: 'translateY(-10px)',
+                  },
+                  to: {
+                    opacity: 1,
+                    transform: 'translateY(0)',
+                  },
+                },
+              }}
+            >
+              {/* CONTATO */}
+              {r.contato && (
+                <Box sx={{ mb: 1.5, display: 'flex', gap: 1.5 }}>
+                  <PhoneRoundedIcon
+                    sx={{
+                      fontSize: 18,
+                      color: 'text.secondary',
+                      mt: 0.25,
+                      flexShrink: 0,
+                    }}
+                  />
+                  <Box sx={{ flex: 1 }}>
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: 'text.secondary',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        fontSize: 11,
+                        letterSpacing: 0.3,
+                      }}
+                    >
+                      Contato
+                    </Typography>
+                    <Typography variant="body2" sx={{ mt: 0.3 }}>
+                      {r.contato}
+                    </Typography>
+                  </Box>
                 </Box>
-              </TableCell>
-              <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                  <PhoneRoundedIcon sx={{ fontSize: 14, color: 'text.secondary' }} />
-                  <Typography variant="body2" color="text.secondary">{r.contato}</Typography>
-                  {r.contato && <WhatsAppButton telefone={r.contato} size="small" />}
+              )}
+
+              {/* DIVISOR */}
+              {r.contato && r.endereco && <Divider sx={{ my: 1 }} />}
+
+              {/* ENDEREÇO */}
+              {r.endereco && (
+                <Box sx={{ mb: 1.5, display: 'flex', gap: 1.5 }}>
+                  <LocationOnRoundedIcon
+                    sx={{
+                      fontSize: 18,
+                      color: 'text.secondary',
+                      mt: 0.25,
+                      flexShrink: 0,
+                    }}
+                  />
+                  <Box sx={{ flex: 1 }}>
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: 'text.secondary',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        fontSize: 11,
+                        letterSpacing: 0.3,
+                      }}
+                    >
+                      Endereço
+                    </Typography>
+                    <Typography variant="body2" sx={{ mt: 0.3 }}>
+                      {r.endereco}
+                    </Typography>
+                  </Box>
                 </Box>
-              </TableCell>
-              <TableCell onClick={() => navigate(`/responsaveis/${r.id}`)} sx={{ display: { xs: 'none', md: 'table-cell' } }}>
-                <Chip
-                  label={`${pessoasCounts[r.id] ?? 0}`}
-                  size="small"
-                  color={(pessoasCounts[r.id] ?? 0) > 0 ? 'primary' : 'default'}
-                  sx={{ fontWeight: 700, minWidth: 32 }}
-                />
-              </TableCell>
-              <TableCell onClick={() => navigate(`/responsaveis/${r.id}`)} sx={{ display: { xs: 'none', lg: 'table-cell' } }}>
-                <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {r.observacao || '—'}
-                </Typography>
-              </TableCell>
-              <TableCell align="right">
-                <Tooltip title="Editar">
-                  <IconButton size="small" color="primary" onClick={() => onEdit(r)}>
-                    <EditRoundedIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Excluir">
-                  <IconButton size="small" color="error" onClick={() => onDelete(r)}>
-                    <DeleteRoundedIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Ver pessoas">
-                  <IconButton size="small" onClick={() => navigate(`/responsaveis/${r.id}`)}>
-                    <ArrowForwardRoundedIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+              )}
+
+              {/* DIVISOR */}
+              {r.endereco && r.observacao && <Divider sx={{ my: 1 }} />}
+
+              {/* OBSERVAÇÃO */}
+              {r.observacao && (
+                <Box sx={{ display: 'flex', gap: 1.5 }}>
+                  <NoteRoundedIcon
+                    sx={{
+                      fontSize: 18,
+                      color: 'text.secondary',
+                      mt: 0.25,
+                      flexShrink: 0,
+                    }}
+                  />
+                  <Box sx={{ flex: 1 }}>
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: 'text.secondary',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        fontSize: 11,
+                        letterSpacing: 0.3,
+                      }}
+                    >
+                      Observação
+                    </Typography>
+                    <Typography variant="body2" sx={{ mt: 0.3 }}>
+                      {r.observacao}
+                    </Typography>
+                  </Box>
+                </Box>
+              )}
+            </Box>
+          )}
+
+          {/* DIVISOR ENTRE ITENS */}
+          {index < responsaveis.length - 1 && <Divider />}
+        </Box>
+      ))}
     </Card>
   );
 }

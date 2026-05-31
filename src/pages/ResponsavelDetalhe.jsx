@@ -12,11 +12,6 @@ import {
   Chip,
   TextField,
   InputAdornment,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
   IconButton,
   Tooltip,
   Alert,
@@ -70,6 +65,7 @@ export default function ResponsavelDetalhe() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editTarget, setEditTarget] = useState(null);
   const [notFound, setNotFound] = useState(false);
+  const [expandedPessoaId, setExpandedPessoaId] = useState(null);
 
   const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
   const { confirm, askConfirm, handleClose: closeConfirm, handleConfirm } = useConfirm();
@@ -246,110 +242,186 @@ export default function ResponsavelDetalhe() {
               onAction={!search ? handleOpenCreate : undefined}
             />
           ) : (
-            <Card sx={{ overflow: 'hidden', overflowX: { xs: 'auto', md: 'visible' } }}>
-              <Table>
-                <TableHead>
-                  <TableRow sx={{ bgcolor: 'background.default' }}>
-                    <TableCell
-                      sx={{ fontWeight: 700, color: 'text.secondary', fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.5, py: 1.5, display: { xs: 'none', sm: 'table-cell' } }}
+            <Card sx={{ overflow: 'hidden' }}>
+              {filtered.map((p, idx) => (
+                <Box key={p.id}>
+                  {/* LINHA PRINCIPAL - NOME + WHATSAPP + AÇÕES */}
+                  <Box
+                    sx={{
+                      p: 2,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1.5,
+                      bgcolor: expandedPessoaId === p.id ? 'action.hover' : 'transparent',
+                      transition: 'background-color 0.2s ease',
+                    }}
+                  >
+                    {/* ÍNDICE + NOME */}
+                    <Avatar
+                      sx={{
+                        width: 32,
+                        height: 32,
+                        bgcolor: 'secondary.main',
+                        fontSize: 12,
+                        fontWeight: 700,
+                        flexShrink: 0,
+                      }}
                     >
-                      #
-                    </TableCell>
-                    <TableCell
-                      sx={{ fontWeight: 700, color: 'text.secondary', fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.5, py: 1.5 }}
-                    >
-                      Nome
-                    </TableCell>
-                    <TableCell
-                      sx={{ fontWeight: 700, color: 'text.secondary', fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.5, py: 1.5, display: { xs: 'none', md: 'table-cell' } }}
-                    >
-                      Endereço
-                    </TableCell>
-                    <TableCell
-                      sx={{ fontWeight: 700, color: 'text.secondary', fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.5, py: 1.5, display: { xs: 'none', md: 'table-cell' } }}
-                    >
-                      Contato
-                    </TableCell>
-                    <TableCell
-                      sx={{ fontWeight: 700, color: 'text.secondary', fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.5, py: 1.5, display: { xs: 'none', lg: 'table-cell' } }}
-                    >
-                      Observação
-                    </TableCell>
-                    <TableCell
-                      align="right"
-                      sx={{ fontWeight: 700, color: 'text.secondary', fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.5, py: 1.5 }}
-                    >
-                      Ações
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {filtered.map((p, idx) => (
-                    <TableRow key={p.id} hover sx={{ '&:last-child td': { border: 0 } }}>
-                      <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
-                        <Avatar sx={{ width: 28, height: 28, bgcolor: 'secondary.main', fontSize: 12, fontWeight: 700 }}>
-                          {idx + 1}
-                        </Avatar>
-                      </TableCell>
-                      <TableCell>
-                        <Typography fontWeight={600} fontSize={14}>{p.nome}</Typography>
-                      </TableCell>
-                      <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          <LocationOnRoundedIcon sx={{ fontSize: 13, color: 'text.secondary', flexShrink: 0 }} />
-                          <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                            {p.endereco}
-                          </Typography>
-                        </Box>
-                      </TableCell>
-                      <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          <PhoneRoundedIcon sx={{ fontSize: 13, color: 'text.secondary' }} />
-                          <Typography variant="body2" color="text.secondary">{p.contato}</Typography>
-                          {p.contato && <WhatsAppButton telefone={p.contato} size="small" />}
-                        </Box>
-                      </TableCell>
-                      <TableCell sx={{ display: { xs: 'none', lg: 'table-cell' } }}>
-                        <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          {p.observacao || '—'}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="right">
-                        <Tooltip title="Editar">
-                          <IconButton size="small" color="primary" onClick={() => handleOpenEdit(p)}>
-                            <EditRoundedIcon fontSize="small" />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Excluir">
-                          <IconButton size="small" color="error" onClick={() => handleDelete(p)}>
-                            <DeleteRoundedIcon fontSize="small" />
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                      {idx + 1}
+                    </Avatar>
 
-              <Box
-                sx={{
-                  px: 2,
-                  py: 1.5,
-                  bgcolor: 'background.default',
-                  borderTop: '1px solid',
-                  borderColor: 'divider',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <Typography variant="caption" color="text.secondary">
-                  {filtered.length} de {pessoas.length} pessoa{pessoas.length !== 1 ? 's' : ''}
-                </Typography>
-                <Button size="small" startIcon={<AddRoundedIcon />} color="secondary" variant="outlined" onClick={handleOpenCreate}>
-                  Adicionar
-                </Button>
-              </Box>
+                    <Box
+                      sx={{ flex: 1, cursor: 'pointer' }}
+                      onClick={() => setExpandedPessoaId(expandedPessoaId === p.id ? null : p.id)}
+                    >
+                      <Typography fontWeight={600} fontSize={14}>
+                        {p.nome}
+                      </Typography>
+                    </Box>
+
+                    {/* BOTÃO WHATSAPP */}
+                    {p.contato && <WhatsAppButton telefone={p.contato} size="small" />}
+
+                    {/* AÇÕES - EDITAR E EXCLUIR */}
+                    <Tooltip title="Editar">
+                      <IconButton size="small" color="primary" onClick={() => handleOpenEdit(p)}>
+                        <EditRoundedIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Excluir">
+                      <IconButton size="small" color="error" onClick={() => handleDelete(p)}>
+                        <DeleteRoundedIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+
+                  {/* DETALHES EXPANDIDOS - RENDERIZAÇÃO CONDICIONAL */}
+                  {expandedPessoaId === p.id && (
+                    <Box
+                      sx={{
+                        bgcolor: 'background.default',
+                        px: 2,
+                        py: 1.5,
+                        borderLeft: '4px solid',
+                        borderColor: 'secondary.main',
+                        animation: 'slideDown 0.3s ease-in-out',
+                        '@keyframes slideDown': {
+                          from: {
+                            opacity: 0,
+                            transform: 'translateY(-10px)',
+                          },
+                          to: {
+                            opacity: 1,
+                            transform: 'translateY(0)',
+                          },
+                        },
+                      }}
+                    >
+                      {/* ENDEREÇO */}
+                      {p.endereco && (
+                        <Box sx={{ mb: 1.5, display: 'flex', gap: 1.5 }}>
+                          <LocationOnRoundedIcon
+                            sx={{
+                              fontSize: 18,
+                              color: 'text.secondary',
+                              mt: 0.25,
+                              flexShrink: 0,
+                            }}
+                          />
+                          <Box sx={{ flex: 1 }}>
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                color: 'text.secondary',
+                                fontWeight: 600,
+                                textTransform: 'uppercase',
+                                fontSize: 11,
+                                letterSpacing: 0.3,
+                              }}
+                            >
+                              Endereço
+                            </Typography>
+                            <Typography variant="body2" sx={{ mt: 0.3 }}>
+                              {p.endereco}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      )}
+
+                      {/* DIVISOR */}
+                      {p.endereco && (p.contato || p.observacao) && <Divider sx={{ my: 1 }} />}
+
+                      {/* CONTATO */}
+                      {p.contato && (
+                        <Box sx={{ mb: 1.5, display: 'flex', gap: 1.5 }}>
+                          <PhoneRoundedIcon
+                            sx={{
+                              fontSize: 18,
+                              color: 'text.secondary',
+                              mt: 0.25,
+                              flexShrink: 0,
+                            }}
+                          />
+                          <Box sx={{ flex: 1 }}>
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                color: 'text.secondary',
+                                fontWeight: 600,
+                                textTransform: 'uppercase',
+                                fontSize: 11,
+                                letterSpacing: 0.3,
+                              }}
+                            >
+                              Contato
+                            </Typography>
+                            <Typography variant="body2" sx={{ mt: 0.3 }}>
+                              {p.contato}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      )}
+
+                      {/* DIVISOR */}
+                      {(p.endereco || p.contato) && p.observacao && <Divider sx={{ my: 1 }} />}
+
+                      {/* OBSERVAÇÃO */}
+                      {p.observacao && (
+                        <Box sx={{ display: 'flex', gap: 1.5 }}>
+                          <NotesRoundedIcon
+                            sx={{
+                              fontSize: 18,
+                              color: 'text.secondary',
+                              mt: 0.25,
+                              flexShrink: 0,
+                            }}
+                          />
+                          <Box sx={{ flex: 1 }}>
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                color: 'text.secondary',
+                                fontWeight: 600,
+                                textTransform: 'uppercase',
+                                fontSize: 11,
+                                letterSpacing: 0.3,
+                              }}
+                            >
+                              Observação
+                            </Typography>
+                            <Typography variant="body2" sx={{ mt: 0.3 }}>
+                              {p.observacao}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      )}
+                    </Box>
+                  )}
+
+                  {/* DIVISOR ENTRE ITENS */}
+                  {idx < filtered.length - 1 && <Divider />}
+                </Box>
+              ))}
             </Card>
           )}
         </Grid>
