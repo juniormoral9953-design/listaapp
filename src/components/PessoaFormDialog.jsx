@@ -14,13 +14,26 @@ import {
   Divider,
   CircularProgress,
 } from '@mui/material';
+import Select from 'react-select';
 import CloseIcon from '@mui/icons-material/Close';
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
+
+const OPÇÕES_LOCALIDADE = [
+  { label: 'Sede Urbana', options: [{ value: 'Centro', label: 'Centro' }, { value: 'São José', label: 'São José' }, { value: 'Várzea', label: 'Várzea' }, { value: 'São Francisco', label: 'São Francisco' }] },
+  { label: 'Distrito de Aruaru', options: [{ value: 'Aruaru', label: 'Aruaru' }, { value: 'Patos', label: 'Patos' }] },
+  { label: 'Distrito de Boa Água', options: [{ value: 'Boa Água', label: 'Boa Água' }, { value: 'Lagoa Funda', label: 'Lagoa Funda' }, { value: 'Quixelô', label: 'Quixelô' }, { value: 'São Gonçalo', label: 'São Gonçalo' }, { value: 'Assentamento Terra Nova', label: 'Assentamento Terra Nova' }, { value: 'Assentamento Jucá Grosso', label: 'Assentamento Jucá Grosso' }, { value: 'Assentamento Bom Jesus', label: 'Assentamento Bom Jesus' }, { value: 'Timbaúba', label: 'Timbaúba' }] },
+  { label: 'Distrito de Pedras', options: [{ value: 'Pedras', label: 'Pedras' }, { value: 'Lagoa do Frade', label: 'Lagoa do Frade' }, { value: 'Poção', label: 'Poção' }, { value: 'Patinhos', label: 'Patinhos' }, { value: 'P.A. Belford Roxo', label: 'P.A. Belford Roxo' }, { value: 'Setor O', label: 'Setor O' }] },
+  { label: 'Distrito de Uiraponga', options: [{ value: 'Uiraponga', label: 'Uiraponga' }, { value: 'Poço do Barro', label: 'Poço do Barro' }] },
+  { label: 'Distrito de Juazeiro da Quintina', options: [{ value: 'Juazeiro da Quintina', label: 'Juazeiro da Quintina' }, { value: 'Lagoa das Carnaúbas', label: 'Lagoa das Carnaúbas' }, { value: 'Lagoa do Tapuio', label: 'Lagoa do Tapuio' }, { value: 'Aroeira', label: 'Aroeira' }] },
+  { label: 'Distrito de Roldão', options: [{ value: 'Roldão', label: 'Roldão' }, { value: 'Extrema', label: 'Extrema' }, { value: 'Poço da Pedra', label: 'Poço da Pedra' }] },
+  { label: 'Distrito de Lagoa Grande', options: [{ value: 'Lagoa Grande', label: 'Lagoa Grande' }, { value: 'Sítio Tapera', label: 'Sítio Tapera' }, { value: 'Lagoa da Barbada', label: 'Lagoa da Barbada' }, { value: 'Juazeiro de Baixo', label: 'Juazeiro de Baixo' }] }
+];
 
 const EMPTY_FORM = {
   nome: '',
   endereco: '',
   contato: '',
+  local: '',
   observacao: '',
 };
 
@@ -43,6 +56,7 @@ export default function PessoaFormDialog({
               nome: pessoa.nome || '',
               endereco: pessoa.endereco || '',
               contato: pessoa.contato || '',
+              local: pessoa.local || '',
               observacao: pessoa.observacao || '',
             }
           : EMPTY_FORM
@@ -63,6 +77,11 @@ export default function PessoaFormDialog({
   const handleChange = (field) => (e) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: '' }));
+  };
+
+  const handleChangeLocal = (selectedOption) => {
+    setForm((prev) => ({ ...prev, local: selectedOption?.value || '' }));
+    if (errors.local) setErrors((prev) => ({ ...prev, local: '' }));
   };
 
   const handleSubmit = () => {
@@ -129,7 +148,58 @@ export default function PessoaFormDialog({
               placeholder="(00) 00000-0000"
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+              <Typography variant="body2" sx={{ fontWeight: 500, color: '#666' }}>Local</Typography>
+              <Select
+                value={form.local ? { value: form.local, label: form.local } : null}
+                onChange={handleChangeLocal}
+                options={OPÇÕES_LOCALIDADE}
+                isSearchable={true}
+                isClearable={true}
+                noOptionsMessage={() => 'Local não encontrado'}
+                placeholder="Selecione uma localidade..."
+                styles={{
+                  control: (base, state) => ({
+                    ...base,
+                    fontSize: '16px',
+                    minHeight: '42px',
+                    borderColor: state.isFocused ? '#1976d2' : '#ccc',
+                    boxShadow: state.isFocused ? '0 0 0 1px #1976d2' : 'none',
+                    '&:hover': {
+                      borderColor: '#999',
+                    },
+                  }),
+                  input: (base) => ({
+                    ...base,
+                    fontSize: '16px',
+                    minHeight: '42px',
+                  }),
+                  option: (base, state) => ({
+                    ...base,
+                    fontSize: '16px',
+                    backgroundColor: state.isSelected ? '#1976d2' : state.isFocused ? '#e3f2fd' : 'white',
+                    color: state.isSelected ? 'white' : 'black',
+                    cursor: 'pointer',
+                    padding: '10px 12px',
+                  }),
+                  groupHeading: (base) => ({
+                    ...base,
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    color: '#666',
+                    padding: '8px 12px',
+                    textTransform: 'none',
+                  }),
+                  menuList: (base) => ({
+                    ...base,
+                    fontSize: '16px',
+                  }),
+                }}
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
             <TextField
               label="Observação"
               fullWidth
