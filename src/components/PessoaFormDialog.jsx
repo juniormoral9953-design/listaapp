@@ -46,6 +46,7 @@ export default function PessoaFormDialog({
 }) {
   const [form, setForm] = useState(EMPTY_FORM);
   const [errors, setErrors] = useState({});
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
   const isEdit = Boolean(pessoa);
 
   useEffect(() => {
@@ -89,8 +90,28 @@ export default function PessoaFormDialog({
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle sx={{ p: 0 }}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+      sx={{
+        '& .MuiDialog-paper': {
+          display: 'flex',
+          flexDirection: 'column',
+          maxHeight: isSelectOpen ? '95vh' : '85vh',
+          top: isSelectOpen ? 10 : 'auto',
+          transition: 'all 0.3s ease',
+          '@media (max-width: 768px)': {
+            maxHeight: isSelectOpen ? '95vh' : '90vh',
+            top: isSelectOpen ? 10 : 0,
+            width: '100%',
+            margin: 0,
+          },
+        },
+      }}
+    >
+      <DialogTitle sx={{ p: 0, position: 'sticky', top: 0, zIndex: 10 }}>
         <Box
           sx={{
             background: 'linear-gradient(135deg, #b3521a 0%, #e8732a 100%)',
@@ -113,7 +134,25 @@ export default function PessoaFormDialog({
         </Box>
       </DialogTitle>
 
-      <DialogContent sx={{ pt: 5, pb: 1 }}>
+      <DialogContent
+
+        sx={{
+          flex: 1,
+          overflowY: 'auto',
+          px: 3,
+          py: 3,
+          '&::-webkit-scrollbar': {
+            width: '6px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#ccc',
+            borderRadius: '3px',
+          },
+          '&::-webkit-scrollbar-thumb:hover': {
+            backgroundColor: '#999',
+          },
+        }}
+      >
         <Grid container spacing={2}>
           <Grid item xs={12} sx={{ mt: 1 }}>
             <TextField
@@ -154,11 +193,16 @@ export default function PessoaFormDialog({
               <Select
                 value={form.local ? { value: form.local, label: form.local } : null}
                 onChange={handleChangeLocal}
+                onMenuOpen={() => setIsSelectOpen(true)}
+                onMenuClose={() => setIsSelectOpen(false)}
                 options={OPÇÕES_LOCALIDADE}
                 isSearchable={true}
                 isClearable={true}
                 noOptionsMessage={() => 'Local não encontrado'}
                 placeholder="Selecione uma localidade..."
+                menuPlacement="top"
+                menuPosition="fixed"
+                menuPortalTarget={document.body}
                 styles={{
                   control: (base, state) => ({
                     ...base,
@@ -195,6 +239,10 @@ export default function PessoaFormDialog({
                     ...base,
                     fontSize: '16px',
                   }),
+                  menuPortal: (base) => ({
+                    ...base,
+                    zIndex: 9999,
+                  }),
                 }}
               />
             </Box>
@@ -211,8 +259,18 @@ export default function PessoaFormDialog({
         </Grid>
       </DialogContent>
 
-      <Divider sx={{ mt: 2 }} />
-      <DialogActions sx={{ px: 3, py: 2, gap: 1 }}>
+      <Divider sx={{ m: 0 }} />
+      <DialogActions
+        sx={{
+          position: 'sticky',
+          bottom: 0,
+          px: 3,
+          py: 2,
+          gap: 1,
+          backgroundColor: 'white',
+          zIndex: 10,
+        }}
+      >
         <Button onClick={onClose} variant="outlined" color="inherit" disabled={loading}>
           Cancelar
         </Button>
