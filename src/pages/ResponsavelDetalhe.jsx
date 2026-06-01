@@ -15,6 +15,8 @@ import {
   IconButton,
   Tooltip,
   Alert,
+  Breadcrumbs,
+  Link,
 } from '@mui/material';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -24,12 +26,12 @@ import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import NotesRoundedIcon from '@mui/icons-material/NotesRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { useParams, useNavigate } from 'react-router-dom';
 import { responsaveisService } from '../services/responsaveisService';
 import { pessoasService } from '../services/pessoasService';
 import { useSnackbar } from '../hooks/useSnackbar';
 import { useConfirm } from '../hooks/useConfirm';
-import PageHeader from '../components/PageHeader';
 import PessoaFormDialog from '../components/PessoaFormDialog';
 import ResponsavelFormDialog from '../components/ResponsavelFormDialog';
 import ConfirmDialog from '../components/ConfirmDialog';
@@ -184,19 +186,52 @@ export default function ResponsavelDetalhe() {
 
   return (
     <Box>
-      <PageHeader
-        title={responsavel?.nome}
-        subtitle="Gerenciamento de pessoas vinculadas"
-        breadcrumbs={[
-          { label: 'Responsáveis', href: '/responsaveis' },
-          { label: responsavel?.nome },
-        ]}
-        action={
-          <Button variant="contained" color="secondary" startIcon={<AddRoundedIcon />} onClick={handleOpenCreate}>
+      {/* Breadcrumb + Botão Adicionar */}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          mb: 3,
+          gap: 2,
+          flexWrap: 'wrap',
+        }}
+      >
+        <Breadcrumbs
+          separator={<NavigateNextIcon fontSize="small" />}
+          sx={{ '& .MuiBreadcrumbs-ol': { flexWrap: 'nowrap' } }}
+        >
+          <Link
+            color="primary"
+            underline="hover"
+            sx={{ cursor: 'pointer', fontSize: 13, fontWeight: 500 }}
+            onClick={() => navigate('/responsaveis')}
+          >
+            Responsáveis
+          </Link>
+          <Typography color="text.secondary" fontSize={13}>
+            {responsavel?.nome}
+          </Typography>
+        </Breadcrumbs>
+        <Button
+          variant="contained"
+          color="secondary"
+          startIcon={<AddRoundedIcon />}
+          onClick={handleOpenCreate}
+          sx={{
+            flexShrink: 0,
+            fontSize: { xs: '0.75rem', sm: '0.875rem' },
+            padding: { xs: '6px 12px', sm: '8px 16px' },
+          }}
+        >
+          <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
             Adicionar pessoa
-          </Button>
-        }
-      />
+          </Box>
+          <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
+            + Pessoa
+          </Box>
+        </Button>
+      </Box>
 
       <Grid container spacing={3}>
         {/* Painel lateral do responsável */}
