@@ -24,13 +24,14 @@ import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import NotesRoundedIcon from '@mui/icons-material/NotesRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { responsaveisService } from '../services/responsaveisService';
 import { pessoasService } from '../services/pessoasService';
 import { useSnackbar } from '../hooks/useSnackbar';
 import { useConfirm } from '../hooks/useConfirm';
 import PageHeader from '../components/PageHeader';
 import PessoaFormDialog from '../components/PessoaFormDialog';
+import ResponsavelFormDialog from '../components/ResponsavelFormDialog';
 import ConfirmDialog from '../components/ConfirmDialog';
 import GlobalSnackbar from '../components/GlobalSnackbar';
 import LoadingOverlay from '../components/LoadingOverlay';
@@ -57,6 +58,7 @@ function InfoRow({ icon, label, value, action }) {
 
 export default function ResponsavelDetalhe() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [responsavel, setResponsavel] = useState(null);
   const [pessoas, setPessoas] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -64,6 +66,7 @@ export default function ResponsavelDetalhe() {
   const [search, setSearch] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editTarget, setEditTarget] = useState(null);
+  const [responsavelDialogOpen, setResponsavelDialogOpen] = useState(false);
   const [notFound, setNotFound] = useState(false);
   const [expandedPessoaId, setExpandedPessoaId] = useState(null);
 
@@ -91,6 +94,39 @@ export default function ResponsavelDetalhe() {
   const handleOpenCreate = () => { setEditTarget(null); setDialogOpen(true); };
   const handleOpenEdit = (p) => { setEditTarget(p); setDialogOpen(true); };
   const handleCloseDialog = () => { setDialogOpen(false); setEditTarget(null); };
+
+  const handleOpenEditResponsavel = () => { setResponsavelDialogOpen(true); };
+  const handleCloseResponsavelDialog = () => { setResponsavelDialogOpen(false); };
+
+  const handleDeleteResponsavel = () => {
+    askConfirm(
+      'Excluir responsável',
+      `Tem certeza que deseja excluir "${responsavel?.nome}"? Todas as pessoas vinculadas também serão removidas.`,
+      async () => {
+        try {
+          await responsaveisService.excluir(id);
+          showSnackbar('Responsável excluído com sucesso!');
+          navigate('/responsaveis');
+        } catch (e) {
+          showSnackbar('Erro ao excluir responsável.', 'error');
+        }
+      }
+    );
+  };
+
+  const handleSaveResponsavel = async (form) => {
+    setSaving(true);
+    try {
+      await responsaveisService.atualizar(id, form);
+      showSnackbar('Responsável atualizado com sucesso!');
+      handleCloseResponsavelDialog();
+      loadData();
+    } catch (e) {
+      showSnackbar('Erro ao salvar responsável.', 'error');
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const handleSave = async (form) => {
     setSaving(true);
@@ -184,14 +220,36 @@ export default function ResponsavelDetalhe() {
                 <Typography variant="h6" fontWeight={700} gutterBottom>
                   {responsavel?.nome}
                 </Typography>
-                <Chip
-                  icon={<PersonRoundedIcon fontSize="small" />}
-                  label={`${pessoas.length} pessoa${pessoas.length !== 1 ? 's' : ''}`}
-                  color="primary"
-                  size="small"
-                  sx={{ fontWeight: 600 }}
-                />
+                <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
+                  <Chip
+                    icon={<PersonRoundedIcon fontSize="small" />}
+                    label={`${pessoas.length} pessoa${pessoas.length !== 1 ? 's' : ''}`}
+                    color="primary"
+                    size="small"
+                    sx={{ fontWeight: 600 }}
+                  />
+                  <Tooltip title="Editar responsável">
+                    <IconButton
+                      size="small"
+                      color="primary"
+                      onClick={handleOpenEditResponsavel}
+                    >
+                      <EditRoundedIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Excluir responsável">
+                    <IconButton
+                      size="small"
+                      color="error"
+                      onClick={handleDeleteResponsavel}
+                    >
+                      <DeleteRoundedIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
               </Box>
+
+              <Divider sx={{ my: 2 }} />
 
               <Divider sx={{ my: 2 }} />
 
@@ -426,6 +484,14 @@ export default function ResponsavelDetalhe() {
           )}
         </Grid>
       </Grid>
+
+      <ResponsavelFormDialog
+        open={responsavelDialogOpen}
+        responsavel={responsavel}
+        onClose={handleCloseResponsavelDialog}
+        onSave={handleSaveResponsavel}
+        loading={saving}
+      />
 
       <PessoaFormDialog
         open={dialogOpen}
