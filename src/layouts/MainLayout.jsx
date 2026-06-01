@@ -195,8 +195,7 @@ export default function MainLayout() {
         sx={{
           flex: 1,
           mt: '64px',
-          ml: { md: `${DRAWER_WIDTH}px` },
-          p: { xs: 2, sm: 3 },
+          p: { xs: 2, md: 3 },
           minHeight: 'calc(100vh - 64px)',
         }}
       >
