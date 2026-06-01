@@ -27,6 +27,7 @@ import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import NotesRoundedIcon from '@mui/icons-material/NotesRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { useParams, useNavigate } from 'react-router-dom';
 import { responsaveisService } from '../services/responsaveisService';
 import { pessoasService } from '../services/pessoasService';
@@ -186,7 +187,7 @@ export default function ResponsavelDetalhe() {
 
   return (
     <Box>
-      {/* Breadcrumb + Botão Adicionar */}
+      {/* Navegação: Voltar + Breadcrumb + Botão Adicionar */}
       <Box
         sx={{
           display: 'flex',
@@ -197,22 +198,51 @@ export default function ResponsavelDetalhe() {
           flexWrap: 'wrap',
         }}
       >
-        <Breadcrumbs
-          separator={<NavigateNextIcon fontSize="small" />}
-          sx={{ '& .MuiBreadcrumbs-ol': { flexWrap: 'nowrap' } }}
+        {/* Seta de Voltar + Breadcrumb */}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            minWidth: 0,
+          }}
         >
-          <Link
-            color="primary"
-            underline="hover"
-            sx={{ cursor: 'pointer', fontSize: 13, fontWeight: 500 }}
-            onClick={() => navigate('/responsaveis')}
+          <Tooltip title="Voltar">
+            <IconButton
+              size="medium"
+              onClick={() => navigate(-1)}
+              sx={{
+                color: 'primary.main',
+                '&:hover': {
+                  bgcolor: 'action.hover',
+                },
+              }}
+            >
+              <ArrowBackRoundedIcon />
+            </IconButton>
+          </Tooltip>
+          <Breadcrumbs
+            separator={<NavigateNextIcon fontSize="small" />}
+            sx={{
+              '& .MuiBreadcrumbs-ol': { flexWrap: 'nowrap' },
+              minWidth: 0,
+            }}
           >
-            Responsáveis
-          </Link>
-          <Typography color="text.secondary" fontSize={13}>
-            {responsavel?.nome}
-          </Typography>
-        </Breadcrumbs>
+            <Link
+              color="primary"
+              underline="hover"
+              sx={{ cursor: 'pointer', fontSize: 13, fontWeight: 500 }}
+              onClick={() => navigate('/responsaveis')}
+            >
+              Responsáveis
+            </Link>
+            <Typography color="text.secondary" fontSize={13}>
+              {responsavel?.nome}
+            </Typography>
+          </Breadcrumbs>
+        </Box>
+
+        {/* Botão Adicionar Pessoa */}
         <Button
           variant="contained"
           color="secondary"
