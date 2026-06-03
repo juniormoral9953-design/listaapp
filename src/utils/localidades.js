@@ -18,8 +18,7 @@ export const OPÇÕES_LOCALIDADE = [
       { value: 'Dois de Agosto', label: 'Dois de Agosto' },
       { value: 'Luiz Valter Rabelo Maia', label: 'Luiz Valter Rabelo Maia' },
       { value: 'Irapuan Nobre', label: 'Irapuan Nobre' },
-      { value: 'Vazantes', label: 'Vazantes' },
-      { value: 'perimetro irrigado', label: 'perimetro irrigado' }
+      { value: 'Vazantes', label: 'Vazantes' }
     ]
   },
   {
@@ -114,7 +113,8 @@ export const OPÇÕES_LOCALIDADE = [
       { value: 'Lagoa da Pedra', label: 'Lagoa da Pedra' },
       { value: 'Riacho da Forquilha', label: 'Riacho da Forquilha' },
       { value: 'Flamenga', label: 'Flamenga' },
-      { value: 'Barbada II', label: 'Barbada II' }
+      { value: 'Barbada II', label: 'Barbada II' },
+      { value: 'perimetro irrigado', label: 'perimetro irrigado' }
     ]
   },
   {
