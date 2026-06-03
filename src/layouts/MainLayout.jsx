@@ -21,6 +21,7 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import MapRoundedIcon from '@mui/icons-material/MapRounded';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 
 const DRAWER_WIDTH = 260;
@@ -28,6 +29,7 @@ const DRAWER_WIDTH = 260;
 const NAV_ITEMS = [
   { label: 'Dashboard', icon: <DashboardRoundedIcon />, path: '/' },
   { label: 'Responsáveis', icon: <PeopleAltRoundedIcon />, path: '/responsaveis' },
+  { label: 'Localidades', icon: <MapRoundedIcon />, path: '/localidades' },
 ];
 
 function DrawerContent({ onClose, currentPath }) {
