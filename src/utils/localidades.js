@@ -2,6 +2,7 @@ export const OPÇÕES_LOCALIDADE = [
   {
     label: 'Sede',
     options: [
+      { value: 'Sede', label: 'Sede' },
       { value: 'Centro', label: 'Centro' },
       { value: 'São José', label: 'São José' },
       { value: 'Várzea', label: 'Várzea' },
@@ -24,6 +25,7 @@ export const OPÇÕES_LOCALIDADE = [
   {
     label: 'Sede Rural',
     options: [
+      { value: 'Sede Rural', label: 'Sede Rural' },
       { value: 'Sítio Raposo', label: 'Sítio Raposo' },
       { value: 'Sítio Veneza', label: 'Sítio Veneza' },
       { value: 'Setor N', label: 'Setor N' },
@@ -120,6 +122,7 @@ export const OPÇÕES_LOCALIDADE = [
   {
     label: 'São João do Aruaru',
     options: [
+      { value: 'São João do Aruaru', label: 'São João do Aruaru' },
       { value: 'Fazenda Lua Branca', label: 'Fazenda Lua Branca' },
       { value: 'Lagoa do Miguel', label: 'Lagoa do Miguel' },
       { value: 'Lagoa do Feijão', label: 'Lagoa do Feijão' },
@@ -196,6 +199,7 @@ export const OPÇÕES_LOCALIDADE = [
   {
     label: 'Boa Água',
     options: [
+      { value: 'Boa Água', label: 'Boa Água' },
       { value: 'Timbaúba', label: 'Timbaúba' },
       { value: 'Assentamento Lagoa da Serra', label: 'Assentamento Lagoa da Serra' },
       { value: 'Massapê', label: 'Massapê' },
@@ -271,6 +275,7 @@ export const OPÇÕES_LOCALIDADE = [
   {
     label: 'Uiraponga',
     options: [
+      { value: 'Uiraponga', label: 'Uiraponga' },
       { value: 'Poção do Holanda', label: 'Poção do Holanda' },
       { value: 'Porção do Henrique', label: 'Porção do Henrique' },
       { value: 'Porções do Despejo', label: 'Porções do Despejo' },
@@ -333,6 +338,7 @@ export const OPÇÕES_LOCALIDADE = [
   {
     label: 'Pedras',
     options: [
+      { value: 'Pedras', label: 'Pedras' },
       { value: 'Lagoa do Frade', label: 'Lagoa do Frade' },
       { value: 'Alto dos Camaleões', label: 'Alto dos Camaleões' },
       { value: 'Setor O', label: 'Setor O' },
@@ -361,6 +367,7 @@ export const OPÇÕES_LOCALIDADE = [
   {
     label: 'Lagoa Grande',
     options: [
+      { value: 'Lagoa Grande', label: 'Lagoa Grande' },
       { value: 'Gangorra do Raimundo Lira', label: 'Gangorra do Raimundo Lira' },
       { value: 'Sítio Tapera', label: 'Sítio Tapera' },
       { value: 'Bom Sucesso', label: 'Bom Sucesso' },
@@ -389,6 +396,7 @@ export const OPÇÕES_LOCALIDADE = [
   {
     label: 'Juazeiro da Quintina',
     options: [
+      { value: 'Juazeiro da Quintina', label: 'Juazeiro da Quintina' },
       { value: 'Fazenda Nova I', label: 'Fazenda Nova I' },
       { value: 'Fazenda Nova II', label: 'Fazenda Nova II' },
       { value: 'Lagoa do Tapuio', label: 'Lagoa do Tapuio' },
@@ -411,6 +419,7 @@ export const OPÇÕES_LOCALIDADE = [
   {
     label: 'Roldão',
     options: [
+      { value: 'Roldão', label: 'Roldão' },
       { value: 'Lagoa Nova', label: 'Lagoa Nova' },
       { value: 'Lagoa da Pedra', label: 'Lagoa da Pedra' },
       { value: 'Córrego do Corcunda', label: 'Córrego do Corcunda' },

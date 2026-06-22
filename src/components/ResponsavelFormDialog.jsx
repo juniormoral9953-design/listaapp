@@ -17,17 +17,7 @@ import {
 import Select from 'react-select';
 import CloseIcon from '@mui/icons-material/Close';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-
-const OPÇÕES_LOCALIDADE = [
-  { label: 'Sede Urbana', options: [{ value: 'Centro', label: 'Centro' }, { value: 'São José', label: 'São José' }, { value: 'Várzea', label: 'Várzea' }, { value: 'São Francisco', label: 'São Francisco' }, { value: 'Cristo Rei', label: 'Cristo Rei' }, { value: 'Hermógenes Henrique Girão', label: 'Hermógenes Henrique Girão' }, { value: 'Nossa Senhora da Conceição', label: 'Nossa Senhora da Conceição' }, { value: 'Girão Maia', label: 'Girão Maia' }, { value: 'Júlia Santiago', label: 'Júlia Santiago' }, { value: 'Antônio Raulino', label: 'Antônio Raulino' }, { value: 'Divino Espírito Santo', label: 'Divino Espírito Santo' }, { value: 'Alto Tiradentes', label: 'Alto Tiradentes' }, { value: 'Dionísio de Matos Fontes', label: 'Dionísio de Matos Fontes' }, { value: 'Dois de Agosto', label: 'Dois de Agosto' }, { value: 'Luiz Valter Rabelo Maia', label: 'Luiz Valter Rabelo Maia' }, { value: 'Irapuan Nobre', label: 'Irapuan Nobre' }, { value: 'Vazantes', label: 'Vazantes' }, { value: 'perimetro irrigado', label: 'perimetro irrigado' }] },
-  { label: 'Distrito de Aruaru', options: [{ value: 'Aruaru', label: 'Aruaru' }, { value: 'Patos', label: 'Patos' }] },
-  { label: 'Distrito de Boa Água', options: [{ value: 'Boa Água', label: 'Boa Água' }, { value: 'Lagoa Funda', label: 'Lagoa Funda' }, { value: 'Quixelô', label: 'Quixelô' }, { value: 'São Gonçalo', label: 'São Gonçalo' }, { value: 'Assentamento Terra Nova', label: 'Assentamento Terra Nova' }, { value: 'Assentamento Jucá Grosso', label: 'Assentamento Jucá Grosso' }, { value: 'Assentamento Bom Jesus', label: 'Assentamento Bom Jesus' }, { value: 'Timbaúba', label: 'Timbaúba' }] },
-  { label: 'Distrito de Pedras', options: [{ value: 'Pedras', label: 'Pedras' }, { value: 'Lagoa do Frade', label: 'Lagoa do Frade' }, { value: 'Poção', label: 'Poção' }, { value: 'Patinhos', label: 'Patinhos' }, { value: 'P.A. Belford Roxo', label: 'P.A. Belford Roxo' }, { value: 'Setor O', label: 'Setor O' }] },
-  { label: 'Distrito de Uiraponga', options: [{ value: 'Uiraponga', label: 'Uiraponga' }, { value: 'Poço do Barro', label: 'Poço do Barro' }] },
-  { label: 'Distrito de Juazeiro da Quintina', options: [{ value: 'Juazeiro da Quintina', label: 'Juazeiro da Quintina' }, { value: 'Lagoa das Carnaúbas', label: 'Lagoa das Carnaúbas' }, { value: 'Lagoa do Tapuio', label: 'Lagoa do Tapuio' }, { value: 'Aroeira', label: 'Aroeira' }] },
-  { label: 'Distrito de Roldão', options: [{ value: 'Roldão', label: 'Roldão' }, { value: 'Extrema', label: 'Extrema' }, { value: 'Poço da Pedra', label: 'Poço da Pedra' }] },
-  { label: 'Distrito de Lagoa Grande', options: [{ value: 'Lagoa Grande', label: 'Lagoa Grande' }, { value: 'Sítio Tapera', label: 'Sítio Tapera' }, { value: 'Lagoa da Barbada', label: 'Lagoa da Barbada' }, { value: 'Juazeiro de Baixo', label: 'Juazeiro de Baixo' }] }
-];
+import { OPÇÕES_LOCALIDADE } from '../utils/localidades';
 
 const EMPTY_FORM = {
   nome: '',
